@@ -1,0 +1,53 @@
+Auth: User, Admin
+
+questions 
+    id
+    question_name
+    status [active,deactive]
+    explanation
+    timestemp
+
+options 
+  id
+  option_name
+  question_id
+  status : [0 wrong, 1 right ]
+  timestemp
+  
+quizes 
+   id 
+   quize_name
+   description
+   status [Pending,Running,Compeleted]
+   expire_time []
+   
+quize_question 
+  id
+  quize_id
+  question_id
+  
+quize_user 
+    id
+    quize_id
+    user_id
+    
+  
+question_category
+    id
+    category_id
+    question_id
+  
+categories
+    id
+    name
+    
+  
+  
+user_quize_history
+    id
+    user_id
+    quize_id
+    question_id
+    status
+    finished_time
+    
