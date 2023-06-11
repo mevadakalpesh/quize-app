@@ -20,6 +20,9 @@ quizes
    description
    status [Pending,Running,Compeleted]
    expire_time []
+   qr_code
+   link
+   
    
 quize_question 
   id

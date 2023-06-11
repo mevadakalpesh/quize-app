@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,8 +38,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('question', QuestionController::class);
-
 Route::post('question/get-questions',[QuestionController::class,'getQuestions'])->name('question.getQuestions');
+
+Route::resource('quize', QuizeController::class);
+Route::post('get-question-by-category',[QuizeController::class,'getQuestionByCategory'])->name('getQuestionByCategory');
 
 Route::get('test', function() {
   

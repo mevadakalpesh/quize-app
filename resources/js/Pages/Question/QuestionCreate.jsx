@@ -4,13 +4,13 @@ import Select from 'react-select'
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import InputError from '@/Components/InputError';
 import Toster from '@/Components/Toster';
-//import { useState,useEffect } from 'react'
+import { useState,useEffect } from 'react'
 
 
 function QuestionCreate( { auth,categories,flash,form_type,question}) {
   const optionTag = ['A','B','C','D'];
   const {data,setData,post,put,process,errors,reset} = useForm(getFormState(form_type));
-    
+  const [setButtonType,buttonType] = useState();
    function selectBoxKeyUpdate(options){
      let updateData =   options.map((catdata,index) => {
        return {
@@ -24,13 +24,14 @@ function QuestionCreate( { auth,categories,flash,form_type,question}) {
      if(form_type == 'add'){
        return addFormState();
      }else{
-       return question;
+       return [...question,{buttonType:''}];
      }
    }
    
    function addFormState(){
      return {
       question_name: '',
+      buttonType:'',
       status: true,
       category:[],
       explanation: '',
@@ -175,8 +176,9 @@ function QuestionCreate( { auth,categories,flash,form_type,question}) {
             </div>
           </div>
           
-           <div className="mt-3">
-               <button type="submit" className="btn btn-info">{form_type} Question</button>
+           <div className="mt-3 d-flex">
+               <button type="submit" onClick={() => setButtonType('back') }  className="btn btn-info text-capitalize">{form_type}</button>
+             
            </div>
            <Toster flash={flash} />
         </form>

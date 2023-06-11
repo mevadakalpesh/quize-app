@@ -11,6 +11,7 @@ interface QuestionRepositoryInterface {
   public function updateQuestion(array $where = [], array $data = []);
   public function getSearchQuestions(Request $request);
   public function deleteQuestion(array $where);
+  public function getQuestionByCategories($request);
   
    
 }

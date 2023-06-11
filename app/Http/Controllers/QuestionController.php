@@ -50,7 +50,6 @@ class QuestionController extends Controller
   * Store a newly created resource in storage.
   */
   public function store(QuestionStoreRequest $request) {
-
     DB::beginTransaction();
     try {
       $categories = array_column($request->category, 'value');
@@ -73,7 +72,11 @@ class QuestionController extends Controller
       $this->questionRepository->createOption($question, $options);
 
       DB::commit();
-      return redirect()->back()->with('success', 'Question Create Successfully.!');
+      if($request->buttonType == 'back'){
+        return redirect()->back()->with('success', 'Question Create Successfully.!');
+      }else {
+        return redirect()->route('question.index')->with('success', 'Question Create Successfully.!');
+      }
     } catch (\Exception $e) {
       DB::rollBack();
       return redirect()->back()->with('error', $e->getMessage());
@@ -137,7 +140,8 @@ class QuestionController extends Controller
       }
       
       DB::commit();
-      return redirect()->back()->with('success', 'Question Update Successfully.!');
+      return redirect()->route('question.index')->with('success', 'Question
+      Update Successfully.!');
     } catch (\Exception $e) {
       DB::rollBack();
       return redirect()->back()->with('error', $e->getMessage());
