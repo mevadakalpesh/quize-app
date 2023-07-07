@@ -40,6 +40,13 @@ question_category
     category_id
     question_id
   
+  
+quize_category
+    id
+    category_id
+    question_id
+  
+  
 categories
     id
     name
@@ -55,4 +62,30 @@ user_quize_history
     finished_time
 
 
+user_quize_history
+  id
+  user_id
+  quize_id
+  question_id
+  user_answer_option_id
+  right_option_id
+  status   [question answer right or wrong ]
+
+user_quize_details
+   id 
+   user_id
+   quize_id
+   quize_status [Pending,Atttemted,Declined]
+   
+  
+  
+
+
 gitub token : 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
+
+git remote set-url origin git@github.com:mevadakalpesh/scoot.git
+
+
+ecommerce@pieknanaplazylezy.eu
+Laravel@123
+simple cottage

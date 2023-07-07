@@ -39,9 +39,16 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Quize',
-    to: route('quize.create'),
+    to: route('quize.index'),
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Templates',
+    to: route('templates.index'),
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+  },
+  
 
   /*
   {

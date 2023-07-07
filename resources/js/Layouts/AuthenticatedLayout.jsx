@@ -1,6 +1,7 @@
 import {
   useState,
-  Suspense
+  Suspense,
+  useEffect
 } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
@@ -22,11 +23,14 @@ import {
   CDropdownItem,
   CContainer, CSpinner 
 } from '@coreui/react'
+import { useDispatch } from 'react-redux';
+import {authSet} from '@/Actions/AuthAction.jsx';
+function Authenticated( {user, header, children}) {
+const dispatch = useDispatch();
 
-export default function Authenticated( {
-  user, header, children
-}) {
-
+useEffect(() => {
+  dispatch(authSet(user));
+},[]);
 
   return (
     <div>
@@ -46,3 +50,5 @@ export default function Authenticated( {
     </div>
   );
 }
+
+export default  Authenticated;

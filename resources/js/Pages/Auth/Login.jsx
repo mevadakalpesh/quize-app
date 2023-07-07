@@ -5,9 +5,25 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router,useForm } from '@inertiajs/react';
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
+import Toster from '@/Components/Toster';
+import CIcon from '@coreui/icons-react'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword ,flash}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -22,21 +38,28 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'));
     };
+    
 
     return (
-        <GuestLayout>
-            <Head title="Log in" />
-
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
+      
+          <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                   <form onSubmit={submit}>
+                    <h1>Login</h1>
+                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      
+                      <CFormInput 
                         id="email"
                         type="email"
                         name="email"
@@ -45,53 +68,64 @@ export default function Login({ status, canResetPassword }) {
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
+                      />
+                    </CInputGroup>
+                      <InputError message={errors.email} className="mt-2
+                      text-danger" />
+                    <CInputGroup className="mb-4">
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      
+                      <CFormInput
                         type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        id="password"
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
-                        autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
-                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
+                      />
+                      <InputError message={errors.password} className="mt-2 text-danger" />
+                    </CInputGroup>
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton type="submit" color="primary" className="px-4" disabled={processing}>
+                          Login
+                        </CButton>
+                      </CCol>
+                     
+                    </CRow>
+                    <div className="mt-3 ">
                         <Link
                             href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="text-decoration-none"
                         >
                             Forgot your password?
                         </Link>
-                    )}
-
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                        <br />
+                         <Link
+                            href={route('register')}
+                            className="text-decoration-none"
+                        >
+                            Register Now
+                        </Link>
+                    </div>
+                  </form>
+                </CCardBody>
+              </CCard>
+             <div className="d-grid gap-2 col-6 mx-auto">
+               <a href={route('socialLogin','google')} className="btn bg-white">Login with Google </a>
+               <a href={route('socialLogin','github')} className="btn bg-black text-white">Login with Github</a>
+            </div>
+              
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+         <Toster flash={flash} />
+    </div>
+    
     );
 }

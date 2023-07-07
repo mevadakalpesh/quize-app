@@ -22,12 +22,10 @@ class QuizeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "quize_name" =>
-            "required|unique:quizes,quize_name,".$this->route('quize'),
-            "expire_time" => 'required|interger',
+            "quize_name" => "required|unique:quizes,quize_name,".$this->route('quize'),
+            "expire_time" => 'required|integer',
             "status" => 'required',
             "questions" => 'required',
-            "users" => 'required',
         ];
     }
 }

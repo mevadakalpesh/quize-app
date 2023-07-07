@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('quize_name')->unique();
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1)->comment('0 = Deactive, 1 = Active');
+            $table->tinyInteger('quize_status')->default(1)->comment('0 = Completed, 1 = Running');
             $table->integer('expire_time')->comment('in Minitue');
             $table->string('qr_code')->nullable();
             $table->string('link')->nullable();

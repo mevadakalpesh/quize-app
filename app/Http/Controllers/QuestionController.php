@@ -42,7 +42,8 @@ class QuestionController extends Controller
     $categories = $this->categoryRepository->getCategories();
     return Inertia('Question/QuestionCreate', [
       'categories' => $categories,
-      'form_type' => 'add'
+      'form_type' => 'add',
+      'question' => []
     ]);
   }
 
@@ -54,11 +55,13 @@ class QuestionController extends Controller
     try {
       $categories = array_column($request->category, 'value');
       $options = $this->questionRepository->formatOptionForCreate($request->options);
+      
       $data = [
         'question_name' => $request->question_name,
         'status' => $request->status ? Question::$activeStatus : Question::$deactiveStatus,
         'explanation' => $request->explanation ?? null,
       ];
+      
       $question = $this->questionRepository->createQuestion($data);
 
       if (blank($question) || blank($options)) {

@@ -15,4 +15,8 @@ class OptionRepository implements OptionRepositoryInterface {
   public function updateOption(array $where ,array $data){
     return $this->option->where($where)->update($data);
   }
+  
+  public function getOption(array $where,array $with = []){
+    return $this->option->where($where)->with($with)->first();
+  }
 }

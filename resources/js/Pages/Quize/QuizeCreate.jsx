@@ -6,47 +6,28 @@ import InputError from '@/Components/InputError';
 import Toster from '@/Components/Toster';
 import { useState,useEffect } from 'react'
 import {QuestionService} from '@/Services/Index.jsx'
-
+import {selectBoxKeyUpdate} from '@/Helper';
+import _ from 'underscore';
+   
 function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
   
-  const {data,setData,post,put,process,errors,reset} = useForm(getFormState(form_type));
-  const [questions,setQuestions] = useState([]);
-   function selectBoxKeyUpdate(options,key,value){
-     let updateData = options.map((catdata,index) => {
-       return {
-          value: catdata[key] ? catdata[key] : catdata.value,
-          label: catdata[value] ? catdata[value] : catdata.label ,
-        }
-     });
-      return updateData;
-   }
-   function getFormState(form_type){
-     if(form_type == 'add'){
-       return addFormState();
-     }else{
-       return quize;
-     }
-   }
-   
-   function addFormState(){
-       return {
-        quize_name: '',
-        description:'',
-        expire_time:'',
-        status: true,
-        category:[],
-        questions:[],
-        users:[],
-      }
-   }
-  
-  function getQuestionByCategory(){
-    
+  const quizeData = {
+        quize_name  : quize && quize.quize_name ? quize.quize_name : '',
+        description : quize && quize.description ? quize.description : '',
+        expire_time : quize && quize.expire_time ? quize.expire_time : null,
+        status      : quize && quize.status == 1 ? true : false,
+        category    : quize && !_.isEmpty(quize.category) ? quize.category : null,
+        questions   : quize && !_.isEmpty(quize.questions) ? quize.questions : null,
+        users       : quize && !_.isEmpty(quize.users) ? quize.users : null,
+        id          : quize && quize.id ? quize.id : null,
   }
   
-  function hendleForm(e){
+  const {data,setData,post,put,process,errors,reset} = useForm(quizeData);
+  const [questions,setQuestions] = useState([]);
+  
+  const  hendleForm = (e) => {
     e.preventDefault();
-    if(form_type == 'edit' && quize && quize.id){
+    if(quize && quize.id){
       put(route('quize.update',quize.id));
     }else{
       post(route('quize.store'),{
@@ -58,6 +39,27 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
   }
   
   useEffect(() => {
+    quizeData.category = selectBoxKeyUpdate(quizeData.category,'id','name');
+    quizeData.questions = selectBoxKeyUpdate(quizeData.questions,'id','question_name');
+    quizeData.users = selectBoxKeyUpdate(quizeData.users,'id','name');
+  },[]);
+  
+  const handleCategoryChange = (selectedValues) => {
+    let value = !_.isEmpty(selectedValues) ? selectedValues : null;
+    setData('category',value);
+  };
+  
+  const handleQuestionChange = (selectedValues) => {
+    let value = !_.isEmpty(selectedValues) ? selectedValues : null;
+    setData('questions',value);
+  };
+  
+  const handleUserChange = (selectedValues) => {
+    let value = !_.isEmpty(selectedValues) ? selectedValues : null;
+    setData('users',value);
+  };
+  
+  useEffect(() => {
     QuestionService.getQuestionByCategory({category:selectBoxKeyUpdate(data.category,'id','name')}).then(response => {
       if(response.data.code == 200){
        setQuestions(response.data.result);
@@ -66,19 +68,8 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
     .catch(error => {
       console.error(error);
     });
-  },[data.category])
+  },[data.category]);
   
-  const handleCategoryChange = (selectedValues) => {
-    setData('category',selectedValues);
-  };
-  
-  const handleQuestionChange = (selectedValues) => {
-    setData('questions',selectedValues);
-  };
-  
-  const handleUserChange = (selectedValues) => {
-    setData('users',selectedValues);
-  };
   
   return (
     <AuthenticatedLayout
@@ -87,7 +78,7 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
       >
       <Head title="Questions" />
       <div className="py-12">
-        <h3>Quize {form_type}</h3>
+        <h3 className="text-capitalize">Quize {form_type}</h3>
         <form onSubmit={hendleForm}>
         
           <div className="form-group">
@@ -125,6 +116,7 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
               value={selectBoxKeyUpdate(data.category,'id','name')}
               onChange={handleCategoryChange}
             />
+            
           </div>
           
           <div className="form-group">
@@ -135,6 +127,7 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
               value={selectBoxKeyUpdate(data.questions,'id','question_name')}
               onChange={handleQuestionChange}
             />
+             <InputError message={errors.questions} className="mt-2" />
           </div>
           
           <div className="form-group">
@@ -146,6 +139,7 @@ function QuizeCreate( { categories,flash,form_type,quize,auth,users}) {
               onChange={handleUserChange}
             />
           </div>
+            <InputError message={errors.users} className="mt-2" />
           
           
           <div className="form-group">

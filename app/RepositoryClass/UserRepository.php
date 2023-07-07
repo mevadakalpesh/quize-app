@@ -16,4 +16,12 @@ class UserRepository implements UserRepositoryInterface {
     })
     ->where($where)->get();
   }
+
+  public function createUser(array $data = []){
+    return $this->user->create($data);
+  }
+  
+  public function getUser(array $where = [],array $with = []){
+    return $this->user->where($where)->with($with)->first();
+  }
 }

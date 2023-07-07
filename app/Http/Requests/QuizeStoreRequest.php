@@ -23,10 +23,9 @@ class QuizeStoreRequest extends FormRequest
     {
         return [
             "quize_name" => "required|unique:quizes,quize_name",
-            "expire_time" => 'required|interger',
+            "expire_time" => 'required|integer',
             "status" => 'required',
             "questions" => 'required',
-            "users" => 'required',
         ];
         
     }

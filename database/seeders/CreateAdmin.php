@@ -19,6 +19,6 @@ class CreateAdmin extends Seeder
           'password' => Hash::make('admin@test.com'),
           'is_admin' => User::$admin
         ];
-        User::updateOrCreate($data);
+        User::updateOrCreate(['email' => 'admin@test.com','is_admin' =>User::$admin ],$data);
     }
 }
